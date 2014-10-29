@@ -137,14 +137,11 @@ void merge_sort(int arr[], int start, int end)
     if(start < end)
     {
 	
-        int middle = (start + end) / 2;	// 9 / 2 = 4
-        std::cout << "Start: " << start << ", Middle: " << middle << std::endl;
-        merge_sort(arr, start, middle);	//0, 4
-        std::cout << "Middle: " << middle + 1 << ", end: " << end << std::endl;
-        merge_sort(arr, middle + 1, end); //5, 9
-        
-        std::cout << "Start: " << start << " Middle: " << middle << " End: " << end << std::endl;
-        merge(arr, start, middle, end); //0, 5, 9
+        int middle = (start + end) / 2;
+        merge_sort(arr, start, middle);
+        merge_sort(arr, middle + 1, end); 
+        std::cout << "Merge: Start: " << start << " Middle: " << middle<< " End: " << end << std::endl; 
+        merge(arr, start, middle, end); 
     }
     
 }
@@ -176,17 +173,15 @@ void merge(int arr[], int start, int middle, int end)
     int j = 0;
     int k = 0;
     
-    for(k = start; k < end; k++)
+    for(k = start; i < left_size && j < right_size; k++)
     {
 	if(left_arr[i] <= right_arr[j])
 	{
-	    arr[k] = left_arr[i];
-	    i++;
+	    arr[k] = left_arr[i++];
 	}
 	else 
 	{
-	    arr[k] = right_arr[j];
-	    j++;
+	    arr[k] = right_arr[j++];
 	}
     }
     
@@ -200,14 +195,27 @@ void merge(int arr[], int start, int middle, int end)
         arr[k++] = right_arr[j++];
     }
 }
+
+void greeting()
+{
+   char enter;
+
+   std::cout << "This program performs various sorts on random and sorted arrays "
+             << "and displays their running times. Press enter to continue." << std::endl;
+   enter = std::cin.get();
+}
+
+
+
 //outputs a menu for the user to choose options from
 void show_menu()
 {
+   
     std::cout << "Sort random and sorted arrays and output their run times." 
               << std::endl;
     
     std::cout << "a. Sort random array and sorted array on all 4 "
-              << "sorts.\n" << std::endl;
+              << "sorts." << std::endl;
     
     std::cout << "b. Sort random array and sorted array on 3 sorts "
               << "(quick, heap, and merge)." << std::endl;
@@ -219,6 +227,8 @@ void show_menu()
     
     std::cout << "e. Display the original array and the sorted "
               << "array on all 4 sorts." << std::endl;
+    std::cout << "f. Exit" << std::endl;
+    
 }
 
 //fills an array with random values

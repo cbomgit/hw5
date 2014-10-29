@@ -140,7 +140,6 @@ void merge_sort(int arr[], int start, int end)
         int middle = (start + end) / 2;
         merge_sort(arr, start, middle);
         merge_sort(arr, middle + 1, end); 
-        std::cout << "Merge: Start: " << start << " Middle: " << middle<< " End: " << end << std::endl; 
         merge(arr, start, middle, end); 
     }
     

@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     randomize_array(random_arr, arr_length);
     print_array(random_arr, arr_length);
     
-    heap_sort(random_arr, arr_length, arr_length);
+    merge_sort(random_arr, 0, arr_length - 1);
     print_array(random_arr, arr_length);
     return 0;
 }

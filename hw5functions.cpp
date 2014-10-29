@@ -35,23 +35,23 @@ void heap_sort(int arr[], int length, int heap_size)
 {
     int temp;
     build_heap(arr, length);
-    for(int i = length - 1; i > 1; i--)
+    
+    for(int i = length - 1; i >= 0; i--)
     {
-	temp = arr[1];
-	arr[1] = arr[i];
+	temp = arr[0];
+	arr[0] = arr[i];
 	arr[i] = temp;
 	heap_size--;
-	heapify(arr, 1, heap_size);
+	heapify(arr, 0, heap_size);
 	
     }
 }
 
 void build_heap(int arr[], int length)
 {
-    int heap_size = length;
-    for(int i = heap_size / 2; i >= 0; i--)
+    for(int i = length / 2; i >= 0; i--)
     {
-	heapify(arr, i, heap_size);
+	heapify(arr, i, length);
     }
 }
 
@@ -62,7 +62,7 @@ void heapify(int arr[], int i, int heap_size)
     int largest = 0;
     int swap_var = 0;
     
-    if(left < heap_size && arr[left] < arr[i])
+    if(left < heap_size && arr[left] > arr[i])
     {
 	largest = left;
     }
@@ -138,9 +138,13 @@ void merge_sort(int arr[], int start, int end)
     {
 	
         int middle = (start + end) / 2;	// 9 / 2 = 4
+        std::cout << "Start: " << start << ", Middle: " << middle << std::endl;
         merge_sort(arr, start, middle);	//0, 4
+        std::cout << "Middle: " << middle + 1 << ", end: " << end << std::endl;
         merge_sort(arr, middle + 1, end); //5, 9
-        merge(arr, start, middle + 1, end); //0, 5, 9
+        
+        std::cout << "Start: " << start << " Middle: " << middle << " End: " << end << std::endl;
+        merge(arr, start, middle, end); //0, 5, 9
     }
     
 }
@@ -150,10 +154,9 @@ void merge(int arr[], int start, int middle, int end)
     //start and ending index of left sub array is start -> middle - 1
     //size is (middle - start)
     int left_size = middle - start + 1;
-    
     //start and ending index of right sub array is middle -> end
     //size is end - middle + 1
-    int right_size = (end - middle);
+    int right_size = end - middle;
     
     //declare the two sub arrays
     int left_arr[left_size];
@@ -161,31 +164,41 @@ void merge(int arr[], int start, int middle, int end)
     
     for(int i = 0; i < left_size; i++)
     {
-	left_arr[i] =arr[start + i ];
+	left_arr[i] = arr[start + i];
     }
     
     for(int i = 0; i < right_size; i++)
     {
-	right_arr[i] = arr[middle + i];
+	right_arr[i] = arr[middle + i + 1];
     }
     
-    int total_length = left_size + right_size;
     int i = 0;
     int j = 0;
-    for(int k = 0; k < total_length; k++)
+    int k = 0;
+    
+    for(k = start; k < end; k++)
     {
 	if(left_arr[i] <= right_arr[j])
 	{
 	    arr[k] = left_arr[i];
 	    i++;
 	}
-	else
+	else 
 	{
 	    arr[k] = right_arr[j];
 	    j++;
 	}
     }
- 
+    
+    while(i < left_size)
+    {
+        arr[k++] = left_arr[i++];
+    }
+    
+    while(j < right_size)
+    {
+        arr[k++] = right_arr[j++];
+    }
 }
 //outputs a menu for the user to choose options from
 void show_menu()

@@ -246,9 +246,29 @@ void randomize_array(int arr[], int length)
 //the random and pre-sorted arrays.
 void output_table(double random_arr_times[], double sorted_arr_times[])
 {
+    int i = 0;
+    std::cout << std::left << std::setw(16) << "Sort" << std::left 
+              << std::setw(16) << "Random" << std::left << std::setw(16) 
+              << "Sorted" << std::endl;
     
+    std::cout << std::left << std::setw(16)<< "Quick " << random_arr_times[i] 
+              << std::left << std::setw(16) << ""
+              << std::left << std::setw(16)<< sorted_arr_times[i++] << std::endl;
     
+    std::cout << std::left << std::setw(16)<< "Heap " << random_arr_times[i]
+              << std::left << std::setw(16) << ""
+              << std::left << std::setw(16)<< sorted_arr_times[i++] << std::endl;
+        
+    std::cout << std::left << std::setw(16)<< "Merge " << random_arr_times[i]
+              << std::left << std::setw(16) << ""
+              << std::left << std::setw(16)<< sorted_arr_times[i++] << std::endl;
+    
+    std::cout << std::left << std::setw(16)<< "Insertion " << random_arr_times[i]
+              << std::left << std::setw(16) << ""
+              << std::left << std::setw(16)<< sorted_arr_times[i++] << std::endl;
 }
+
+
 void copy_array(int src[], int dest[], int length)
 {
     for(int i = 0; i < length; i++)
@@ -311,7 +331,7 @@ void run_all(int sorted_arr[], int random_arr[], int length)
     heap_sort(random_arr_copy, length, length);
     end = clock();
     copy_array(random_arr, random_arr_copy, length);
-    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     start = clock();
     heap_sort(sorted_arr_copy, length, length);
@@ -325,7 +345,7 @@ void run_all(int sorted_arr[], int random_arr[], int length)
     merge_sort(random_arr_copy, 0, length - 1);
     end = clock();
     copy_array(random_arr, random_arr_copy, length);
-    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     start = clock();
     merge_sort(sorted_arr_copy, 0, length - 1);
@@ -338,7 +358,7 @@ void run_all(int sorted_arr[], int random_arr[], int length)
     insertion_sort(random_arr_copy, length);
     end = clock();
     copy_array(random_arr, random_arr_copy, length);
-    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     start = clock();
     insertion_sort(sorted_arr_copy, length);
@@ -384,7 +404,7 @@ void run_all_except_insertion(int random_arr[], int sorted_arr[], int length)
     heap_sort(random_arr_copy, length, length);
     end = clock();
     copy_array(random_arr, random_arr_copy, length);
-    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     start = clock();
     heap_sort(sorted_arr_copy, length, length);
@@ -398,7 +418,7 @@ void run_all_except_insertion(int random_arr[], int sorted_arr[], int length)
     merge_sort(random_arr_copy, 0, length - 1);
     end = clock();
     copy_array(random_arr, random_arr_copy, length);
-    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     start = clock();
     merge_sort(sorted_arr_copy, 0, length - 1);
@@ -550,7 +570,7 @@ void sort_and_display(int random_arr[], int sorted_arr[], int length)
     heap_sort(random_arr_copy, length, length);
     end = clock();
     print_array(random_arr_copy, length);
-    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     print_array(sorted_arr_copy, length);
     start = clock();
@@ -570,7 +590,7 @@ void sort_and_display(int random_arr[], int sorted_arr[], int length)
     merge_sort(random_arr_copy, 0, length - 1);
     end = clock();
     print_array(random_arr_copy, length);
-    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     print_array(sorted_arr_copy, length);
     start = clock();
@@ -588,7 +608,7 @@ void sort_and_display(int random_arr[], int sorted_arr[], int length)
     insertion_sort(random_arr_copy, length);
     end = clock();
     print_array(random_arr_copy, length);
-    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     print_array(sorted_arr_copy, length);
     start = clock();

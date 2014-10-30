@@ -35,8 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/hw5functions.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/hw5.o \
+	${OBJECTDIR}/hw5functions.o
 
 
 # C Compiler Flags
@@ -63,15 +63,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/hw6: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/hw6 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/hw5.o: hw5.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/hw5.o hw5.cpp
+
 ${OBJECTDIR}/hw5functions.o: hw5functions.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/hw5functions.o hw5functions.cpp
-
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

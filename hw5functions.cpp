@@ -246,26 +246,28 @@ void randomize_array(int arr[], int length)
 //the random and pre-sorted arrays.
 void output_table(double random_arr_times[], double sorted_arr_times[])
 {
-    int i = 0;
+    
+    std::cout << std::fixed;
+    std::cout << std::setprecision(4);
     std::cout << std::left << std::setw(16) << "Sort" << std::left 
-              << std::setw(16) << "Random" << std::left << std::setw(16) 
+              << std::setw(16) << "Random" << std::left << std::setw(8) 
               << "Sorted" << std::endl;
     
-    std::cout << std::left << std::setw(16)<< "Quick " << random_arr_times[i] 
-              << std::left << std::setw(16) << ""
-              << std::left << std::setw(16)<< sorted_arr_times[i++] << std::endl;
+    std::cout << std::left << std::setw(16)<< "Quick " << random_arr_times[0] 
+              << std::left << std::setw(10)<< ""
+              << std::left << std::setw(8)<< sorted_arr_times[0] << std::endl;
     
-    std::cout << std::left << std::setw(16)<< "Heap " << random_arr_times[i]
-              << std::left << std::setw(16) << ""
-              << std::left << std::setw(16)<< sorted_arr_times[i++] << std::endl;
+    std::cout << std::left << std::setw(16)<< "Heap " << random_arr_times[1]
+              << std::left << std::setw(10) << ""
+              << std::left << std::setw(8)<< sorted_arr_times[1] << std::endl;
         
-    std::cout << std::left << std::setw(16)<< "Merge " << random_arr_times[i]
-              << std::left << std::setw(16) << ""
-              << std::left << std::setw(16)<< sorted_arr_times[i++] << std::endl;
+    std::cout << std::left << std::setw(16)<< "Merge " << random_arr_times[2]
+              << std::left << std::setw(10) << ""
+              << std::left << std::setw(8)<< sorted_arr_times[2] << std::endl;
     
-    std::cout << std::left << std::setw(16)<< "Insertion " << random_arr_times[i]
-              << std::left << std::setw(16) << ""
-              << std::left << std::setw(16)<< sorted_arr_times[i++] << std::endl;
+    std::cout << std::left << std::setw(16)<< "Insertion " << random_arr_times[3]
+              << std::left << std::setw(10) << ""
+              << std::left << std::setw(8)<< sorted_arr_times[3] << std::endl;
 }
 
 
@@ -310,8 +312,8 @@ void run_all(int sorted_arr[], int random_arr[], int length)
     clock_t start, end;
     int ndx = 0;
     
-    copy_array(sorted_arr, random_arr_copy, length);    
-    copy_array(random_arr, sorted_arr_copy, length);
+    copy_array(random_arr, random_arr_copy, length);    
+    copy_array(sorted_arr, sorted_arr_copy, length);
     
     //run quicksort getting elapsed time for each
     start = clock();
@@ -383,8 +385,8 @@ void run_all_except_insertion(int random_arr[], int sorted_arr[], int length)
     clock_t start, end;
     int ndx = 0;
     
-    copy_array(sorted_arr, random_arr_copy, length);    
-    copy_array(random_arr, sorted_arr_copy, length);
+    copy_array(random_arr, random_arr_copy, length);    
+    copy_array(sorted_arr, sorted_arr_copy, length);
     
     //run quicksort getting elapsed time for each
     start = clock();
@@ -435,7 +437,7 @@ void sort_input_is_random(int random_arr[], int length)
     
     //double arrays with running times
     double random_times[4];
-    double sorted_times[4] = {-1, -1, -1, -1};
+    double sorted_times[4] = {0, 0, 0, 0};
     
     //clock_t struct returned by the clock function for start and end times
     clock_t start, end;
@@ -472,8 +474,7 @@ void sort_input_is_random(int random_arr[], int length)
     insertion_sort(random_arr_copy, length);
     end = clock();
     copy_array(random_arr, random_arr_copy, length);
-    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
-    
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     output_table(random_times, sorted_times);
 }
 
@@ -484,7 +485,7 @@ void sort_input_is_random_not_insertion(int random_arr[], int length)
     //double arrays with running times
     double random_times[4];
     //we won't need this array, but output_table expects it. 
-    double sorted_times[4] = {-1, -1, -1, -1}; 
+    double sorted_times[4] = {0,0,0,0}; 
     
     //clock_t struct returned by the clock function for start and end times
     clock_t start, end;
@@ -539,86 +540,102 @@ void sort_and_display(int random_arr[], int sorted_arr[], int length)
     clock_t start, end;
     int ndx = 0;
     
-    copy_array(sorted_arr, random_arr_copy, length);    
-    copy_array(random_arr, sorted_arr_copy, length);
+    copy_array(random_arr, random_arr_copy, length);    
+    copy_array(sorted_arr, sorted_arr_copy, length);
     
     //run a sort getting elapsed time for each
     //print the arrays before and after and then copy the original array 
     //back
+    std::cout << "Unsorted" << std::endl;
     print_array(random_arr_copy, length);
     start = clock();
     quick_sort(random_arr_copy, 0, length - 1);
     end = clock();
+    std::cout << "Sorted" << std::endl;
     print_array(random_arr_copy, length);
     random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
+    std::cout << "Unsorted" << std::endl;
     print_array(sorted_arr_copy, length);
     start = clock();
     quick_sort(sorted_arr_copy, 0, length - 1);
     end = clock();
+    std::cout << "Sorted" << std::endl;
     print_array(sorted_arr_copy, length);
     sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
-    copy_array(sorted_arr, random_arr_copy, length);    
-    copy_array(random_arr, sorted_arr_copy, length);
+    copy_array(random_arr, random_arr_copy, length);    
+    copy_array(sorted_arr, sorted_arr_copy, length);
     
     //run a sort getting elapsed time for each
     //print the arrays before and after and then copy the original array 
     //back
+    std::cout << "Unsorted" << std::endl;
     print_array(random_arr_copy, length);
     start = clock();
     heap_sort(random_arr_copy, length, length);
     end = clock();
+    std::cout << "Sorted" << std::endl;
     print_array(random_arr_copy, length);
     random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
+    std::cout << "Unsorted" << std::endl;
     print_array(sorted_arr_copy, length);
     start = clock();
     heap_sort(sorted_arr_copy, length, length);
     end = clock();
+    std::cout << "Sorted" << std::endl;
     print_array(sorted_arr_copy, length);
     sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
-    copy_array(sorted_arr, random_arr_copy, length);    
-    copy_array(random_arr, sorted_arr_copy, length);
+    copy_array(random_arr, random_arr_copy, length);    
+    copy_array(sorted_arr, sorted_arr_copy, length);
     
     //run a sort getting elapsed time for each
     //print the arrays before and after and then copy the original array 
     //back
+    std::cout << "Unsorted" << std::endl;
     print_array(random_arr_copy, length);
     start = clock();
     merge_sort(random_arr_copy, 0, length - 1);
     end = clock();
+    std::cout << "Sorted" << std::endl;
     print_array(random_arr_copy, length);
     random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
+    std::cout << "Unsorted" << std::endl;
     print_array(sorted_arr_copy, length);
     start = clock();
     merge_sort(sorted_arr_copy, 0, length - 1);
     end = clock();
+    std::cout << "Sorted" << std::endl;
     print_array(sorted_arr_copy, length);
     sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
-    copy_array(sorted_arr, random_arr_copy, length);    
-    copy_array(random_arr, sorted_arr_copy, length);
+    copy_array(random_arr, random_arr_copy, length);    
+    copy_array(sorted_arr, sorted_arr_copy, length);
     
     //run insertion sort getting elapsed time for each
+    std::cout << "Unsorted" << std::endl;
     print_array(random_arr_copy, length);
     start = clock();
     insertion_sort(random_arr_copy, length);
     end = clock();
+    std::cout << "Sorted" << std::endl;
     print_array(random_arr_copy, length);
     random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
+    std::cout << "Unsorted" << std::endl;
     print_array(sorted_arr_copy, length);
     start = clock();
     insertion_sort(sorted_arr_copy, length);
     end = clock();
+    std::cout << "Sorted" << std::endl;
     print_array(sorted_arr_copy, length);
     sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-    copy_array(sorted_arr, random_arr_copy, length);    
-    copy_array(random_arr, sorted_arr_copy, length);    
+    copy_array(random_arr, random_arr_copy, length);    
+    copy_array(sorted_arr, sorted_arr_copy, length);    
     
     output_table(random_times, sorted_times);
 }

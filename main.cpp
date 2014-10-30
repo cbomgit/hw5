@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "hw5functions.h"
-#include <ctime>
+#include <time.h>
 #include <unistd.h>
 
 /*
@@ -40,6 +40,7 @@ int main(int argc, char** argv)
     for(int i = 0; i < arr_length; i++)
        sorted_arr[i] = i * 20;
 
+    
     char option;
    
     greeting();
@@ -51,14 +52,19 @@ int main(int argc, char** argv)
          switch(option) 
          {
             case 'a':
+               run_all(random_arr, sorted_arr, arr_length);
                break;
             case 'b':
+               run_all_except_insertion(random_arr, sorted_arr, arr_length);
                break;
             case 'c':
+               sort_input_is_random(random_arr, arr_length);
                break;
             case 'd':
+               sort_input_is_random_not_insertion(random_arr, arr_length);
                break;
             case 'e':
+               sort_and_display(random_arr, sorted_arr, arr_length);
                break;
             default:
                std::cout << "Not a valid option" << std::endl;
@@ -68,7 +74,6 @@ int main(int argc, char** argv)
          std::cin >> option;
     }
     
-     
     return 0;
 }
 

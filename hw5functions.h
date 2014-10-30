@@ -105,8 +105,7 @@ void randomize_array(int [], int);
 
 //expects two arrays of size 4 with the running times of the various sorts on 
 //the random and pre-sorted arrays.
-void output_table(long double [], 
-                  long double []);
+void output_table(double [],double []);
 //copy one array to another temporary array
 void copy_array(int [], int [], int);
 

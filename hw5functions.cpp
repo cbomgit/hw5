@@ -10,6 +10,7 @@
 #include<cstdlib>
 #include<stdlib.h>
 #include<time.h>
+#include<iomanip>
 
 void insertion_sort(int arr[], int length)
 {
@@ -243,8 +244,7 @@ void randomize_array(int arr[], int length)
 
 //expects two arrays of length 4 with the running times of the various sorts on 
 //the random and pre-sorted arrays.
-void output_table(long double sorted_arr_times[], 
-                  long double unsorted_arr_times[])
+void output_table(double random_arr_times[], double sorted_arr_times[])
 {
     
     
@@ -259,55 +259,346 @@ void copy_array(int src[], int dest[], int length)
 
 void print_array(int arr[], int length)
 {
+    const int max_per_row = 8;
+    int row_count = 0;
+    
     for(int i = 0; i < length; i++)
     {
-        std::cout << arr[i] << " ";
+        std::cout << std::setw(7) << arr[i] << " ";
+        if(++row_count >= max_per_row)
+        {
+            std::cout << std::endl;
+            row_count = 0;
+        }
     }
+    
     std::cout << std::endl;
 }
 
 
-void run_all(int arr1[], int arr2[], int length)
+void run_all(int sorted_arr[], int random_arr[], int length)
 {
-    int random_arr[length];
-    int sorted_arr[length];
+    //copy of the input arrays to keep them intact
+    int random_arr_copy[length];
+    int sorted_arr_copy[length];
     
-    copy_array(arr1, random_arr);
-    copy_array(arr2, sorted_arr);
+    //double arrays with running times
+    double sorted_times[4];
+    double random_times[4];
+    
+    //clock_t struct returned by the clock function for start and end times
+    clock_t start, end;
+    int ndx = 0;
+    
+    copy_array(sorted_arr, random_arr_copy, length);    
+    copy_array(random_arr, sorted_arr_copy, length);
     
     //run quicksort getting elapsed time for each
-    quick_sort(random_arr[], 0, length - 1);
-    quick_sort(sorted_arr[], 0, length - 1);
+    start = clock();
+    quick_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    start = clock();
+    quick_sort(sorted_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(sorted_arr, sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     //run heapsort
-    heap_sort(random_arr[], length, length);
-    heap_sort(sorted_arr[], length, length);
+    start = clock();
+    heap_sort(random_arr_copy, length, length);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    start = clock();
+    heap_sort(sorted_arr_copy, length, length);
+    end = clock();
+    copy_array(sorted_arr, sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+
     
     //run merge sort
-    merge_sort(random_arr[], 0, length - 1);
-    merge_sort(sorted_arr[], 0, length - 1);
+    start = clock();
+    merge_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    start = clock();
+    merge_sort(sorted_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(sorted_arr, sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
     //run insertion sort getting elapsed time for each
-    insertion_sort(random_arr[], length);
-    insertion_sort(sorted_arr[], length);
+    start = clock();
+    insertion_sort(random_arr_copy, length);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
+    start = clock();
+    insertion_sort(sorted_arr_copy, length);
+    end = clock();
+    copy_array(sorted_arr, sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
     
+    output_table(random_times, sorted_times);
 }
 
-void run_all_except_insertion(int arr1[], int arr2[], int length)
+void run_all_except_insertion(int random_arr[], int sorted_arr[], int length)
 {
-    int random_arr[length];
-    int sorted_arr[length];
+    //copy of the input arrays to keep them intact
+    int random_arr_copy[length];
+    int sorted_arr_copy[length];
     
-    copy_array(arr1, random_arr);
-    copy_array(arr2, sorted_arr);
+    //double arrays with running times
+    double sorted_times[4];
+    double random_times[4];
+    
+    //clock_t struct returned by the clock function for start and end times
+    clock_t start, end;
+    int ndx = 0;
+    
+    copy_array(sorted_arr, random_arr_copy, length);    
+    copy_array(random_arr, sorted_arr_copy, length);
+    
+    //run quicksort getting elapsed time for each
+    start = clock();
+    quick_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    start = clock();
+    quick_sort(sorted_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(sorted_arr, sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
     //run heapsort
-    heap_sort(random_arr[], length, length);
-    heap_sort(sorted_arr[], length, length);
+    start = clock();
+    heap_sort(random_arr_copy, length, length);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    start = clock();
+    heap_sort(sorted_arr_copy, length, length);
+    end = clock();
+    copy_array(sorted_arr, sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+
     
     //run merge sort
-    merge_sort(random_arr[], 0, length - 1);
-    merge_sort(sorted_arr[], 0, length - 1);
+    start = clock();
+    merge_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    start = clock();
+    merge_sort(sorted_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(sorted_arr, sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    output_table(random_times, sorted_times);
+}
+
+void sort_input_is_random(int random_arr[], int length)
+{
+    int random_arr_copy[length];
+    
+    //double arrays with running times
+    double random_times[4];
+    double sorted_times[4] = {-1, -1, -1, -1};
+    
+    //clock_t struct returned by the clock function for start and end times
+    clock_t start, end;
+    int ndx = 0;
+    
+    copy_array(random_arr, random_arr_copy, length);
+    
+    //run quicksort getting elapsed time for each
+    start = clock();
+    quick_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    
+    //run heapsort
+    start = clock();
+    heap_sort(random_arr_copy, length, length);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+
+    
+    //run merge sort
+    start = clock();
+    merge_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
     //run insertion sort getting elapsed time for each
-    insertion_sort(random_arr[], length);
-    insertion_sort(sorted_arr[], length);
+    start = clock();
+    insertion_sort(random_arr_copy, length);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    output_table(random_times, sorted_times);
+}
+
+void sort_input_is_random_not_insertion(int random_arr[], int length)
+{
+    int random_arr_copy[length];
+    
+    //double arrays with running times
+    double random_times[4];
+    //we won't need this array, but output_table expects it. 
+    double sorted_times[4] = {-1, -1, -1, -1}; 
+    
+    //clock_t struct returned by the clock function for start and end times
+    clock_t start, end;
+    int ndx = 0;
+    
+    copy_array(random_arr, random_arr_copy, length);
+    
+    //run quicksort getting elapsed time for each
+    start = clock();
+    quick_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    
+    //run heapsort
+    start = clock();
+    heap_sort(random_arr_copy, length, length);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+
+    
+    //run merge sort
+    start = clock();
+    merge_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    copy_array(random_arr, random_arr_copy, length);
+    random_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    output_table(random_times, sorted_times);
+}
+
+void sort_and_display(int random_arr[], int sorted_arr[], int length)
+{
+    std::cout << "Random array unsorted: " << std::endl;
+    print_array(random_arr, length);
+    
+    std::cout << "Sorted array before sort: " << std::endl;
+    print_array(sorted_arr, length);
+    
+    //copy of the input arrays to keep them intact
+    int random_arr_copy[length];
+    int sorted_arr_copy[length];
+    
+    //double arrays with running times
+    double sorted_times[4];
+    double random_times[4];
+    
+    //clock_t struct returned by the clock function for start and end times
+    clock_t start, end;
+    int ndx = 0;
+    
+    copy_array(sorted_arr, random_arr_copy, length);    
+    copy_array(random_arr, sorted_arr_copy, length);
+    
+    //run a sort getting elapsed time for each
+    //print the arrays before and after and then copy the original array 
+    //back
+    print_array(random_arr_copy, length);
+    start = clock();
+    quick_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    print_array(random_arr_copy, length);
+    random_times[ndx] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    print_array(sorted_arr_copy, length);
+    start = clock();
+    quick_sort(sorted_arr_copy, 0, length - 1);
+    end = clock();
+    print_array(sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    copy_array(sorted_arr, random_arr_copy, length);    
+    copy_array(random_arr, sorted_arr_copy, length);
+    
+    //run a sort getting elapsed time for each
+    //print the arrays before and after and then copy the original array 
+    //back
+    print_array(random_arr_copy, length);
+    start = clock();
+    heap_sort(random_arr_copy, length, length);
+    end = clock();
+    print_array(random_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    print_array(sorted_arr_copy, length);
+    start = clock();
+    heap_sort(sorted_arr_copy, length, length);
+    end = clock();
+    print_array(sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    copy_array(sorted_arr, random_arr_copy, length);    
+    copy_array(random_arr, sorted_arr_copy, length);
+    
+    //run a sort getting elapsed time for each
+    //print the arrays before and after and then copy the original array 
+    //back
+    print_array(random_arr_copy, length);
+    start = clock();
+    merge_sort(random_arr_copy, 0, length - 1);
+    end = clock();
+    print_array(random_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    print_array(sorted_arr_copy, length);
+    start = clock();
+    merge_sort(sorted_arr_copy, 0, length - 1);
+    end = clock();
+    print_array(sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    copy_array(sorted_arr, random_arr_copy, length);    
+    copy_array(random_arr, sorted_arr_copy, length);
+    
+    //run insertion sort getting elapsed time for each
+    print_array(random_arr_copy, length);
+    start = clock();
+    insertion_sort(random_arr_copy, length);
+    end = clock();
+    print_array(random_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+    
+    print_array(sorted_arr_copy, length);
+    start = clock();
+    insertion_sort(sorted_arr_copy, length);
+    end = clock();
+    print_array(sorted_arr_copy, length);
+    sorted_times[ndx++] = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+    copy_array(sorted_arr, random_arr_copy, length);    
+    copy_array(random_arr, sorted_arr_copy, length);    
+    
+    output_table(random_times, sorted_times);
 }

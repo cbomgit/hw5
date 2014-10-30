@@ -38,7 +38,8 @@ void heap_sort(int [], int, int);
 /*Function to build a heap
  *Parameters:
  *int [] array: array to build heap from
- *int length: length of the aray
+ *int length: length of the array
+ *int heapsize size of heap
 */
 void build_heap(int [], int);
 
@@ -112,6 +113,21 @@ void copy_array(int [], int [], int);
 //print an array to the screen
 void print_array(int [], int);
 
+//Function to run all of the sorts on both arrays
+void run_all(int [], int [], int length);
+
+
+//Function to run only three sorts
+void run_all_except_insertion(int [], int [], int);
+
+//Function to run all sorts on randomized input
+void sort_input_is_random(int [], int);
+
+//Function to run only 3 sorts on randomized input
+void sort_input_is_random_not_insertion(int [], int);
+
+//Function to run all sorts and show the arrays, unsorted and sorted
+void sort_and_display(int [], int [], int);
 
 #endif	/* HW5FUNCTIONS_H */
 

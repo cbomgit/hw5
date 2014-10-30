@@ -265,3 +265,49 @@ void print_array(int arr[], int length)
     }
     std::cout << std::endl;
 }
+
+
+void run_all(int arr1[], int arr2[], int length)
+{
+    int random_arr[length];
+    int sorted_arr[length];
+    
+    copy_array(arr1, random_arr);
+    copy_array(arr2, sorted_arr);
+    
+    //run quicksort getting elapsed time for each
+    quick_sort(random_arr[], 0, length - 1);
+    quick_sort(sorted_arr[], 0, length - 1);
+    
+    //run heapsort
+    heap_sort(random_arr[], length, length);
+    heap_sort(sorted_arr[], length, length);
+    
+    //run merge sort
+    merge_sort(random_arr[], 0, length - 1);
+    merge_sort(sorted_arr[], 0, length - 1);
+    //run insertion sort getting elapsed time for each
+    insertion_sort(random_arr[], length);
+    insertion_sort(sorted_arr[], length);
+    
+    
+}
+
+void run_all_except_insertion(int arr1[], int arr2[], int length)
+{
+    int random_arr[length];
+    int sorted_arr[length];
+    
+    copy_array(arr1, random_arr);
+    copy_array(arr2, sorted_arr);
+    //run heapsort
+    heap_sort(random_arr[], length, length);
+    heap_sort(sorted_arr[], length, length);
+    
+    //run merge sort
+    merge_sort(random_arr[], 0, length - 1);
+    merge_sort(sorted_arr[], 0, length - 1);
+    //run insertion sort getting elapsed time for each
+    insertion_sort(random_arr[], length);
+    insertion_sort(sorted_arr[], length);
+}
